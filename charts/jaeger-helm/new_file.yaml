@@ -1,0 +1,14 @@
+Name:                     app1-service
+Namespace:                default
+Labels:                   app=app1
+Annotations:              <none>
+Selector:                 app=app1
+Type:                     LoadBalancer
+IP:                       10.96.98.244
+Port:                     app1-service  80/TCP
+TargetPort:               8081/TCP
+NodePort:                 app1-service  32610/TCP
+Endpoints:                <none>
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>

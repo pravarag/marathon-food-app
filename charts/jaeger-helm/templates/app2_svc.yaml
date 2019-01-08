@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2-service
+  labels:
+    app: app2
+spec:
+  ports:
+  - name: app2-service
+    port: {{ .Values.app2.image.port }}
+    targetPort: {{ .Values.app2.image.targetPort }}
+  selector:
+    app: jaeger-tracer-app2

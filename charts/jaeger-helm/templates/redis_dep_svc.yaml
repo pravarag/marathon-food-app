@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-for-jaeger
+  labels:
+    app: redis-for-jaeger
+    redis-infra: redis-pod
+spec:
+  replicas: {{ .Values.redis.replicaCount }}
+  selector:
+    matchLabels:
+      app: redis-for-jaeger
+  template:
+    metadata:
+      labels:
+        app: redis-for-jaeger
+    spec:
+      containers:
+      - image: {{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}
+        command:
+          - "redis-server"
+        args:
+          - "--protected-mode no"  
+        name: redis-container
+        ports:
+          - name: redis
+            containerPort: {{ .Values.redis.image.containerPort }}
+            protocol: {{ .Values.redis.image.protocol }}
+        volumeMounts:
+          - name: redis-volume
+            mountPath: "/mnt/redis"
+
+      volumes: 
+      - name: redis-volume
+        persistentVolumeClaim:
+          claimName: redis-pv-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  labels:
+    app: redis
+    redis-infra: redis-service
+spec:
+  hostname: redis-host
+  type: ClusterIP
+  ports:
+  - name: redis-service
+    port: {{ .Values.redis.image.port }}
+    protocal: {{ .Values.redis.image.protocol }}
+    targetPort: {{ .Values.redis.image.targetPort }}
+  selector: 
+    app: redis-for-jaeger

@@ -1,0 +1,40 @@
+app1:
+  replicaCount: 1
+  image:
+    repository: pravarag/jaeger-trace-app1
+    tag: latest
+    protocol: TCP
+    port: 80
+    targetPort: 8081
+
+app2:
+  replicaCount: 1
+  image:
+    repository: pravarag/jaeger-trace-app2
+    tag: latest
+    protocol: TCP
+    port: 80
+    targetPort: 8082
+
+app3:
+ replicaCount: 1
+ image:
+  repository: pravarag/jaeger-trace-app3
+  tag: latest
+  protocol: TCP
+  port: 80
+  targetPort: 8083
+
+
+redis:
+  replicaCount: 1
+  image:
+    repository: bitnami/redis
+    tag: latest
+    protocol: TCP
+    containerPort: 6379
+    port: 6379
+    targetPort: 6379
+
+enableJaegerAllInOne: false
+jaegerAgentHost: jgr-jaeger-agent.fission.svc.cluster.local # jaeger-agent.default.svc.cluster.local

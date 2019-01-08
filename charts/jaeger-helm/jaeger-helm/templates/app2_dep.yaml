@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-tracer-app2
+  labels:
+    app: jaeger-tracer-app2
+spec:
+  replicas: {{ .Values.app2.replicaCount }}
+  selector:
+    matchLabels:
+      app: jaeger-tracer-app2
+  template:
+    metadata: 
+      labels:
+        app: jaeger-tracer-app2
+    spec:
+     containers:
+     - image: {{ .Values.app2.image.repository }}:{{ .Values.app2.image.tag }}
+       name: jaeger-tracer-app2
+       ports:
+       - containerPort: {{ .Values.app2.image.port }}
+       env:
+       - name: JAEGER_AGENT_HOST
+         value: {{ .Values.jaegerAgentHost }}
+       - name: IP
+         value: app3-service.default.svc.cluster.local
+       - name: REDIS_HOST
+         value: redis-service.default.svc.cluster.local
